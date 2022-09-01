@@ -30,6 +30,7 @@ class Hoteis(Resource):
        return {'hoteis': hoteis}
 
 class Hotel(Resource):
+    #instancia da função RequestParser() que facilita o manejo de arquivos json
     argumentos = reqparse.RequestParser()
     argumentos.add_argument('nome')
     argumentos.add_argument('estrelas')
@@ -37,15 +38,21 @@ class Hotel(Resource):
     argumentos.add_argument('cidade')
 
     def find_hotel(hotel_id):
+        #percorre o dicionario
         for hotel in hoteis:
+            #se o dicionario tiver um par chave valor com a chave id igual
+            #ao passado pelo usuario ele retorna a inserção do dicionario
             if hotel['hotel_id'] == hotel_id:
                 return hotel
         return None
 
     def get(self, hotel_id):
+        #função que verifica se ele existe
         hotel = Hotel.find_hotel(hotel_id)
+        #caso hotel não seja nulo
         if hotel:
             return hotel
+        #senão
         return {'message': 'Hotel not found.'}, 404 #not found
 
     def post(self, hotel_id):
